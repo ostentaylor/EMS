@@ -43,9 +43,10 @@ const searchEmployee = async (req, res) => {
 
     }catch(err) {
         res.status(500).json({message:err.message});
-    }
+}};
 
-    // update an employee
+
+// update an employee
     
     const updateEmployee = async(req, res) => {
         try{
@@ -72,5 +73,24 @@ const searchEmployee = async (req, res) => {
         }
     }
 
-}};
+};
+
+// Delete an employee
+const deleteEmployee = async(req, res) => {
+    try{
+        await res.employee.remove();
+        res.json({message:'Employee deleted'});
+    }catch(err) {
+        res.status(500).json({message:err.message});
+    }
+};
+
+module.exports = {
+    createEmployee,
+    getAllEmployees,
+    getEmployeeById,
+    searchEmployee,
+    updateEmployee,
+    deleteEmployee
+};
 
