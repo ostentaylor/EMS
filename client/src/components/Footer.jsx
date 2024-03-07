@@ -30,7 +30,7 @@ function Footer() {
           backgroundColor: "#1976d2",
         }}
       >
-        <Container maxWidth="sm" sx={{ height: "25%" }}>
+        <Container maxWidth="sm" sx={{ height: "20%" }}>
           {/* <Typography variant="body1">
             My sticky footer can be found here.
           </Typography> */}
