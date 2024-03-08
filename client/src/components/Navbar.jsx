@@ -15,38 +15,48 @@ function Navbar({ onMenuToggle }) {
   const [isLoading, setIsLoading] = useState(false);
   const [openRegisterDialog, setOpenRegisterDialog] = useState(false); // State to control the visibility of the register dialog
 
-  useEffect(() => {
-    setIsLoading(true);
-    // Fetch employee data from your backend API
-    fetchEmployees(searchQuery)
-      .then((data) => {
-        setSearchResults(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching employee data:", error);
-        setIsLoading(false);
-      });
-  }, [searchQuery]); // Update search results whenever searchQuery changes
+  // Function to fetch employees from the backend based on the search query
+  // Define data state variable
+  const [data, setData] = useState([]);
 
   // Function to fetch employees from the backend based on the search query
   const fetchEmployees = async (query) => {
+    setIsLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/employees/search?q=${query}`
+        `http://localhost:3000/employees/search?search=${searchQuery}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
       );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
       const data = await response.json();
-      return data;
+      if (response.status === 200) {
+        setSearchResults(data?.data);
+        setIsLoading(false)
+      } else {
+        setIsLoading(false);
+      }
     } catch (error) {
-      console.error("Error fetching employee data:", error);
-      return [];
+      console.log(error?.message);
     }
   };
 
+  useEffect(() => {
+    // setIsLoading(true);
+    // Fetch employee data from your backend API
+    fetchEmployees();
+  }, [searchQuery]); // Update search results whenever searchQuery changes
 
+  // Handle search button click
+  const handleSearchClick = () => {
+    setSearchResults(
+      data.map((employee) => ({ ...employee, id: employee._id }))
+    );
+  };
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -93,7 +103,7 @@ function Navbar({ onMenuToggle }) {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => setSearchResults([])} // Clear search results when search button is clicked
+              onClick={handleSearchClick} // Clear search results when search button is clicked
             >
               <SearchIcon />
             </Button>

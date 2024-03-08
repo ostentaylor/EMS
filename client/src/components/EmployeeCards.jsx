@@ -11,7 +11,7 @@ import {
   Button,
   TextField,
   Grid,
-  Box
+  Box,
 } from "@mui/material";
 import { Edit, DeleteOutlined } from "@mui/icons-material";
 import Container from "@mui/material/Container";
@@ -59,16 +59,17 @@ function EmployeeCard(props) {
   const handleEditSubmit = async () => {
     try {
       const updatedEmployee = {
-        ...selectedEmployee,
+        // ...selectedEmployee,
         firstName: editedFirstName,
         lastName: editedLastName,
         email: editedEmail,
-        salary: editedSalary,
+        salary: editedSalary * 1,
       };
       await axios.put(
-        `http://localhost:3000/employees/${selectedEmployee.employeeId}`,
+        `http://localhost:3000/employees/${selectedEmployee._id}`,
         updatedEmployee
       );
+
       fetchEmployeeData();
       setEditDialogOpen(false);
     } catch (error) {
@@ -76,13 +77,16 @@ function EmployeeCard(props) {
     }
   };
 
-  const handleDeleteClick = async (employeeId) => {
+  const handleDeleteClick = async (employee) => {
+    // Accept `employee` as a parameter
+
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this employee?"
     );
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:3000/employees/${employeeId}`);
+        await axios.delete(`http://localhost:3000/employees/${employee._id}`);
+        // Assuming `_id` is the correct property
         fetchEmployeeData();
       } catch (error) {
         console.error("Error deleting employee:", error);
@@ -129,7 +133,7 @@ function EmployeeCard(props) {
                   </IconButton>,
                   <IconButton
                     key="delete"
-                    onClick={() => handleDeleteClick(employee.employeeId)}
+                    onClick={() => handleDeleteClick(employee)}
                   >
                     <DeleteOutlined />
                   </IconButton>,
