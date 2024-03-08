@@ -13,7 +13,9 @@ function EmployeeFormDialog({ open, handleClose, employeeData }) {
     firstName: "",
     lastName: "",
     email: "",
+    salary: "",
     employeeNumber: "",
+
   });
 
   // If employeeData is provided, populate the form fields with its data
@@ -24,6 +26,7 @@ function EmployeeFormDialog({ open, handleClose, employeeData }) {
         firstName: employeeData.firstName,
         lastName: employeeData.lastName,
         email: employeeData.email,
+        salary: employeeData.salary,
         employeeNumber: employeeData.employeeNumber,
       });
     }
@@ -90,6 +93,15 @@ function EmployeeFormDialog({ open, handleClose, employeeData }) {
             label="Email"
             variant="outlined"
             value={formData.email}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            name="salary"
+            label="Salary"
+            variant="outlined"
+            value={formData.salary}
             onChange={handleChange}
             fullWidth
             margin="normal"

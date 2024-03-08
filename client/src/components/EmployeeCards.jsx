@@ -24,6 +24,7 @@ function EmployeeCard(props) {
   const [editedFirstName, setEditedFirstName] = useState("");
   const [editedLastName, setEditedLastName] = useState("");
   const [editedEmail, setEditedEmail] = useState("");
+  const [editedSalary, setEditedSalary] = useState("");
 
   useEffect(() => {
     fetchEmployeeData();
@@ -47,6 +48,7 @@ function EmployeeCard(props) {
     setEditedFirstName(employee.firstName);
     setEditedLastName(employee.lastName);
     setEditedEmail(employee.email);
+    setEditedSalary(employee.salary);
     setEditDialogOpen(true);
   };
 
@@ -61,8 +63,9 @@ function EmployeeCard(props) {
         firstName: editedFirstName,
         lastName: editedLastName,
         email: editedEmail,
+        salary: editedSalary,
       };
-      await axios.patch(
+      await axios.put(
         `http://localhost:3000/employees/${selectedEmployee.employeeId}`,
         updatedEmployee
       );
@@ -116,7 +119,7 @@ function EmployeeCard(props) {
               <CardHeader
                 avatar={<Avatar>{employee.firstName.charAt(0)}</Avatar>}
                 title={`${employee.firstName} ${employee.lastName}`}
-                subheader={`${employee.email} | Employee Number: ${employee.employeeNumber}`}
+                subheader={`${employee.email}  Employee Number: ${employee.employeeNumber}  salary: ${employee.salary}`}
                 action={[
                   <IconButton
                     key="edit"
@@ -141,7 +144,6 @@ function EmployeeCard(props) {
 
         <DialogContent sx={{ mb: 3 }}>
           <Box component="form">
-           
             <TextField
               label="First Name"
               value={editedFirstName}
@@ -161,7 +163,14 @@ function EmployeeCard(props) {
               value={editedEmail}
               onChange={(e) => setEditedEmail(e.target.value)}
               fullWidth
-              sx={{ mb: 1 }} // Add margin-bottom
+              sx={{ mb: 2 }} // Add margin-bottom
+            />
+            <TextField
+              label="Salary"
+              value={editedSalary}
+              onChange={(e) => setEditedSalary(e.target.value)}
+              fullWidth
+              sx={{ mb: 2 }} // Add margin-bottom
             />
           </Box>
         </DialogContent>
