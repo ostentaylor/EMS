@@ -1,95 +1,64 @@
 import React, { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import MenuIcon from "@mui/icons-material/Menu";
+import Button from "@mui/material/Button";
+import EmployeeFormDialog from "../pages/EmployeeFormDialog"; // Import the EmployeeFormDialog component
 import SearchIcon from "@mui/icons-material/Search";
-import Sidemenu from "./Sidemenu";
 
 function Navbar({ onMenuToggle }) {
-    const [isSidemenuOpen, setIsSidemenuOpen] = useState(false);
-
-    const handleMenuToggle = () => {
-      setIsSidemenuOpen(!isSidemenuOpen);
-    };
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [openRegisterDialog, setOpenRegisterDialog] = useState(false); // State to control the visibility of the register dialog
 
   useEffect(() => {
     setIsLoading(true);
     // Fetch employee data from your backend API
-    fetch("http://localhost:3000/employees")
-      .then((response) => response.json())
+    fetchEmployees(searchQuery)
       .then((data) => {
-        setSearchResults(data); // Assuming the API returns an array of employee objects
+        setSearchResults(data);
         setIsLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching employee data:", error);
         setIsLoading(false);
       });
-  }, []);
+  }, [searchQuery]); // Update search results whenever searchQuery changes
 
-  const handleSearchChange = (event) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-    const filteredResults = searchResults.filter(
-      (employee) =>
-        employee.name?.toLowerCase().includes(query.toLowerCase()) ||
-        employee.email?.toLowerCase().includes(query.toLowerCase())
-    );
-    setSearchResults(filteredResults);
+  // Function to fetch employees from the backend based on the search query
+  const fetchEmployees = async (query) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/employees/search?q=${query}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching employee data:", error);
+      return [];
+    }
   };
 
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: "white",
-    "&:hover": {
-      backgroundColor: "whitesmoke",
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "lightgray",
-  }));
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "black",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
- 
+  const handleRegisterClick = () => {
+    setOpenRegisterDialog(true); // Open the register dialog when the Register button is clicked
+  };
 
+  const handleCloseRegisterDialog = () => {
+    setOpenRegisterDialog(false); // Close the register dialog
+  };
 
   return (
     <Box sx={{ flexGrow: 1, marginBottom: 2 }}>
@@ -102,16 +71,7 @@ function Navbar({ onMenuToggle }) {
             aria-label="open drawer"
             sx={{ mr: 2 }}
             onClick={onMenuToggle}
-          >
-            {/* <IconButton
-              component={Link}
-              to="/sidemenu"
-              color="inherit"
-              aria-label="menu"
-            > */}
-            <MenuIcon />
-            {/* </IconButton> */}
-          </IconButton>
+          ></IconButton>
           <Typography
             variant="h6"
             noWrap
@@ -121,62 +81,42 @@ function Navbar({ onMenuToggle }) {
             EMS
           </Typography>
 
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
+          {/* Combined Search Input and Button */}
+          <Box sx={{ display: "flex" }}>
+            <input
+              type="text"
               placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
               value={searchQuery}
               onChange={handleSearchChange}
+              style={{ marginRight: "8px", padding: "8px" }}
             />
-            {isLoading && <p>Loading...</p>}
-            {searchResults.length > 0 && searchQuery !== "" && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  zIndex: 1,
-                  marginTop: 1,
-                  width: "100%",
-                  maxHeight: 200,
-                  overflow: "auto",
-                  bgcolor: "white",
-                  border: "1px solid lightgray",
-                  borderRadius: 1,
-                  boxShadow: 1,
-                }}
-              >
-                {searchResults.map((result) => (
-                  <Typography
-                    key={result.id}
-                    variant="body1"
-                    sx={{
-                      p: 1,
-                      cursor: "pointer",
-                      "&:hover": {
-                        backgroundColor: "lightgray",
-                      },
-                    }}
-                  >
-                    {result.name} - {result.email}
-                  </Typography>
-                ))}
-              </Box>
-            )}
-          </Search>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setSearchResults([])} // Clear search results when search button is clicked
+            >
+              <SearchIcon />
+            </Button>
+          </Box>
+
+          {/* Register Button */}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleRegisterClick}
+          >
+            Register
+          </Button>
+
+          {/* EmployeeFormDialog for Register */}
+          <EmployeeFormDialog
+            open={openRegisterDialog}
+            handleClose={handleCloseRegisterDialog}
+          />
         </Toolbar>
       </AppBar>
-      <Sidemenu open={isSidemenuOpen} onClose={handleMenuToggle} />
     </Box>
   );
 }
 
 export default Navbar;
-
-
-
-
-
-
-
