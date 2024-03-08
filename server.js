@@ -1,25 +1,32 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const connectToDB = require("./db")
-const mongoose = require('mongoose')
-const { config } = require('dotenv');
-const employeeRoutes =  require("./routes/employee")
-config()
+const mongoose = require("mongoose"); // Import Mongoose directly
+const { config } = require("dotenv");
+const corsMiddleware = require("./middlewares/corsMiddleware");
+const connectDb = require("./db/db")
+app.use(express.json());
+// Load environment variables
+config();
 
-app.get('/', (req, res) => {
-    res.send('good afternoon');
-});
+// Middleware
+app.use(corsMiddleware);
 
-app.use("/", employeeRoutes)
 
-const port = process.env.port ||  3000;
 
-const startsProcess = async () => {
+// Routes
+const employeeRoutes = require("./routes/employee");
+app.use("/", employeeRoutes); 
 
-    await connectToDB()
-    app.listen(port, ()=> {
-    console.log(`Server  is running at http://localhost:${port}`);
-    });
-    
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+
+async function start() {
+  await connectDb();
+  app.listen(PORT, function () {
+    console.log(`Server is listening on port ${PORT}`);
+  });
 }
-startsProcess()
+
+start();
+

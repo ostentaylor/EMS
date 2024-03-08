@@ -27,6 +27,8 @@ router.get("/employees/search", searchEmployee); // Corrected function name
 router.put('/employees/:id', updateEmployee);
 
 // Delete a specific Employee by ID - DELETE request
-router.delete('/employees/:id', deleteEmployee);
+// Update the route to accept employee number instead of ID
+router.delete('/employees/:employeeNumber', deleteEmployee);
+
 
 module.exports = router;

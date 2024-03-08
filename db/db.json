@@ -1,0 +1,86 @@
+[
+  {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "employeeNumber": "EMP_12345",
+    "salary": 60000
+  },
+  {
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "email": "jane.smith@example.com",
+    "employeeNumber": "EMP_67890",
+    "salary": 70000
+  },
+  {
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "email": "alice.johnson@example.com",
+    "employeeNumber": "EMP_23456",
+    "salary": 55000
+  },
+  {
+    "firstName": "Michael",
+    "lastName": "Brown",
+    "email": "michael.brown@example.com",
+    "employeeNumber": "EMP_90123",
+    "salary": 62000
+  },
+  {
+    "firstName": "Emily",
+    "lastName": "Davis",
+    "email": "emily.davis@example.com",
+    "employeeNumber": "EMP_56789",
+    "salary": 58000
+  },
+  {
+    "firstName": "David",
+    "lastName": "Martinez",
+    "email": "david.martinez@example.com",
+    "employeeNumber": "EMP_34567",
+    "salary": 65000
+  },
+  {
+    "firstName": "John ",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "employeeNumber": "EMP_89012",
+    "salary": 60000
+  },
+  {
+    "firstName": "Jane ",
+    "lastName": "Smith",
+    "email": "jane.smith@example.com",
+    "employeeNumber": "EMP_45678",
+    "salary": 70000
+  },
+  {
+    "firstName": "Michael ",
+    "lastName": "Johnson",
+    "email": "michael.brown@example.com",
+    "employeeNumber": "EMP_12345",
+    "salary": 62000
+  },
+  {
+    "firstName": "John ",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "employeeNumber": "EMP_90123",
+    "salary": 62000
+  },
+  {
+    "firstName": "Jane ",
+    "lastName": "Smith",
+    "email": "jane.smith@example.com",
+    "employeeNumber": "EMP_56789",
+    "salary": 58000
+  },
+  {
+    "firstName": "Michael",
+    "lastName": " Johnson",
+    "email": "micjohn@example.com",
+    "employeeNumber": "EMP_23456",
+    "salary": 55000
+  }
+]

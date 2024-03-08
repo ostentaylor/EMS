@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Employeeschema = new mongoose.Schema({
+const employeeSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: [true, 'Please add your first name']
@@ -29,4 +29,5 @@ const Employeeschema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Employee", Employeeschema);
+
+module.exports = mongoose.model("employees", employeeSchema);
